@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial & Media Tools</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* EMI Calculator Styles */
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        /* Image Tools Styles */
+        .file-box {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .quality-slider {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        /* Results Table */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .result-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        /* Ad Section */
+        .ad-section {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #e0e0e0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .tab-btn.active {
+            background: #2196F3;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('emi')">💰 EMI Calculator</button>
+            <button class="tab-btn" onclick="showTab('compressor')">📷 Image Compressor</button>
+            <button class="tab-btn" onclick="showTab('converter')">🖼️ Image Converter</button>
+        </div>
+
+        <!-- Ad Unit -->
+        <div class="ad-section">
+            <!-- Google AdSense Unit -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+        </div>
+
+        <!-- EMI Calculator -->
+        <div id="emi" class="tab-content active">
+            <div class="tool-section">
+                <h2>💰 EMI Calculator</h2>
+                <div class="input-group">
+                    <div class="input-box">
+                        <label>Principal Amount ($):</label>
+                        <input type="number" id="principal" class="form-control" min="0">
+                    </div>
+                    <div class="input-box">
+                        <label>Annual Interest Rate (%):</label>
+                        <input type="number" id="interest" class="form-control" min="0" step="0.1">
+                    </div>
+                    <div class="input-box">
+                        <label>Loan Term (Years):</label>
+                        <input type="number" id="years" class="form-control" min="0">
+                    </div>
+                </div>
+                <button onclick="calculateEMI()">Calculate EMI</button>
+                <table class="result-table">
+                    <tr>
+                        <td>📅 Monthly EMI</td>
+                        <td id="emiResult">-</td>
+                    </tr>
+                    <tr>
+                        <td>💸 Total Interest</td>
+                        <td id="totalInterest">-</td>
+                    </tr>
+                    <tr>
+                        <td>💰 Total Payment</td>
+                        <td id="totalPayment">-</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Image Compressor -->
+        <div id="compressor" class="tab-content">
+            <div class="tool-section">
+                <h2>📷 Image Compressor</h2>
+                <div class="file-box">
+                    <input type="file" id="compressInput" accept="image/*">
+                    <p>🎚️ Compression Level: <span id="qualityValue">80</span>%</p>
+                    <input type="range" class="quality-slider" min="1" max="100" value="80" 
+                           oninput="document.getElementById('qualityValue').textContent = this.value">
+                </div>
+                <button onclick="compressImage()">Compress Image</button>
+                <table class="result-table">
+                    <tr>
+                        <td>📁 Original Size</td>
+                        <td id="originalSize">-</td>
+                    </tr>
+                    <tr>
+                        <td>📦 Compressed Size</td>
+                        <td id="compressedSize">-</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Image Converter -->
+        <div id="converter" class="tab-content">
+            <div class="tool-section">
+                <h2>🖼️ Image Converter</h2>
+                <div class="file-box">
+                    <input type="file" id="convertInput" accept="image/*">
+                    <select id="formatSelect">
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WebP</option>
+                    </select>
+                </div>
+                <button onclick="convertImage()">Convert Image</button>
+                <div id="convertedResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tabs Navigation
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // EMI Calculator
+        function calculateEMI() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('interest').value) / 1200;
+            const years = parseFloat(document.getElementById('years').value) * 12;
+            
+            const emi = (principal * rate * Math.pow(1 + rate, years)) / 
+                       (Math.pow(1 + rate, years) - 1);
+            
+            document.getElementById('emiResult').textContent = `$${emi.toFixed(2)}`;
+            document.getElementById('totalInterest').textContent = 
+                `$${(emi * years - principal).toFixed(2)}`;
+            document.getElementById('totalPayment').textContent = 
+                `$${(emi * years).toFixed(2)}`;
+        }
+
+        // Image Compressor
+        function compressImage() {
+            const file = document.getElementById('compressInput').files[0];
+            const quality = document.querySelector('.quality-slider').value / 100;
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        
+                        canvas.toBlob(blob => {
+                            document.getElementById('originalSize').textContent = 
+                                `${(file.size / 1024).toFixed(2)} KB`;
+                            document.getElementById('compressedSize').textContent = 
+                                `${(blob.size / 1024).toFixed(2)} KB`;
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = `compressed_${file.name}`;
+                            link.click();
+                        }, 'image/jpeg', quality);
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Image Converter
+        function convertImage() {
+            const file = document.getElementById('convertInput').files[0];
+            const format = document.getElementById('formatSelect').value;
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        
+                        canvas.toBlob(blob => {
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = `converted.${format}`;
+                            link.click();
+                        }, `image/${format}`);
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Initialize AdSense
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</body>
+</html>
